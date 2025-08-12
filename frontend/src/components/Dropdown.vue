@@ -1,18 +1,30 @@
-<script setup>
-const props = defineProps({
-  items: {
-    type: Array,
-    required: true,
-  },
-});
-
-const emit = defineEmits({});
-</script>
-
 <template>
-  <div>
-    <select v-for="value in props.items">
-      <p>{{ value }}</p>
-    </select>
-  </div>
+    <div>
+        <select v-model="selectedOption">
+            <option @click="selectOption" v-for="item in items" :value="item"> {{ item }}</option>
+        </select>
+    </div>
 </template>
+
+<script setup>
+
+    import { ref } from "vue";
+
+    const selectedOption = ref("L")
+
+    const props = defineProps({
+        items: {
+            type: Array,
+            required: true,
+        },
+    });
+
+    const emit = defineEmits([
+        "optionSelected",
+    ]);
+
+    function selectOption() {
+        emit("optionSelected", selectedOption)
+    }
+
+</script>

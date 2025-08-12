@@ -21,12 +21,16 @@
       <input v-model="lightness" type="range" min="0" max="100" step="1" class="slider" />
 
       <!--Choices for level of qr code-->
-      <Dropdown :items="['L', 'H', 'M', 'Q']" />
+      <Dropdown
+        :value="currentSafetyLevel"
+        @optionSelected="selectSafetyOption"
+        :items="safetyLevels"
+    />
     </div>
     <div>
       <!-- A higher "level" reduces chances of error if code is damaged -->
       <!--Used to set values for QR code-->
-      <QrcodeVue :value="qrLink" :foreground="qrColor" size="150" render-as="canvas" level="" />
+      <QrcodeVue :value="qrLink" :foreground="qrColor" :size=400 render-as="canvas" :level="currentSafetyLevel.value" />
     </div>
   </div>
 </template>
@@ -42,9 +46,15 @@ const hue = ref(0);
 const saturation = ref(100);
 const lightness = ref(50);
 const qrLink = ref("");
-const errLevel = ref("");
+const safetyLevels = ['L', 'M', 'Q', 'H']
+const currentSafetyLevel = ref('L')
 
 const qrColor = computed(() => {
   return `hsla(${hue.value}, ${saturation.value}%, ${lightness.value}%, 100%)`;
 });
+
+function selectSafetyOption(selectedOption) {
+    currentSafetyLevel.value = selectedOption
+}
+
 </script>
