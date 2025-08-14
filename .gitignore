@@ -344,3 +344,4 @@ vite.config.ts.timestamp-*
 
 backend/uploads/*
 .DS_Store
+*.orig
