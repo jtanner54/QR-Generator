@@ -21,16 +21,21 @@
       <input v-model="lightness" type="range" min="0" max="100" step="1" class="slider" />
 
       <!--Choices for level of qr code-->
-      <Dropdown
-        :value="currentSafetyLevel"
-        @optionSelected="selectSafetyOption"
-        :items="safetyLevels"
-    />
+      <Dropdown @optionSelected="selectSafetyOption" :items="safetyLevels" />
+
+      <input type="file" @change="fileChange"></input>
     </div>
     <div>
       <!-- A higher "level" reduces chances of error if code is damaged -->
       <!--Used to set values for QR code-->
-      <QrcodeVue :value="qrLink" :foreground="qrColor" :size=400 render-as="canvas" :level="currentSafetyLevel.value" />
+      <QrcodeVue
+        :value="qrLink"
+        :foreground="qrColor"
+        :size="400"
+        render-as="canvas"
+        :level="currentSafetyLevel.value"
+      />
+      <p>Value: {{ currentSafetyLevel.value }}</p>
     </div>
   </div>
 </template>
@@ -41,20 +46,33 @@
 import { ref, computed } from "vue";
 import QrcodeVue from "qrcode.vue";
 import Dropdown from "./components/Dropdown.vue";
+import { uploadImage } from './services/api_service.js'
 
 const hue = ref(0);
 const saturation = ref(100);
 const lightness = ref(50);
 const qrLink = ref("");
-const safetyLevels = ['L', 'M', 'Q', 'H']
-const currentSafetyLevel = ref('L')
+const safetyLevels = ["L", "M", "Q", "H"];
+const currentSafetyLevel = ref("L");
 
 const qrColor = computed(() => {
   return `hsla(${hue.value}, ${saturation.value}%, ${lightness.value}%, 100%)`;
 });
 
 function selectSafetyOption(selectedOption) {
-    currentSafetyLevel.value = selectedOption
+  currentSafetyLevel.value = selectedOption;
+}
+
+async function fileChange(event) {
+  const image = event.target.files[0];
+  if (!image) return;
+
+  const result = await uploadImage(image);
+  if (result.success) {
+    console.log('Uploaded:', result);
+  } else {
+    console.error('Upload failed:', result.error)
+  }
 }
 
 </script>
