@@ -1,8 +1,7 @@
 <template>
     
-    <div class="flex gap-x-5">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/tools">Tools</RouterLink>
+    <div>
+        <RouterLink to="/tools/qrgenerator">Custom QR Code Generator</RouterLink>
     </div>
 
     <RouterView />

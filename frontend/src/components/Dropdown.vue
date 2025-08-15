@@ -7,20 +7,20 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+    import { ref } from "vue";
 
-const selectedOption = ref("L");
+    const selectedOption = ref("L");
 
-const props = defineProps({
-  items: {
-    type: Array,
-    required: true,
-  },
-});
+    const props = defineProps({
+    items: {
+        type: Array,
+        required: true,
+    },
+    });
 
-const emit = defineEmits(["optionSelected"]);
+    const emit = defineEmits(["optionSelected"]);
 
-function selectOption() {
-  emit("optionSelected", selectedOption);
+    function selectOption() {
+    emit("optionSelected", selectedOption);
 }
 </script>
